@@ -24,7 +24,8 @@ height = height - margin.top - margin.bottom;
 var simulation = d3.forceSimulation()
     // pull nodes together based on the links between them
     .force("link", d3.forceLink().id(function(d) {
-        return d.source;
+        debugger;
+        return d.id;
     })
     .strength(0.025))
     // push nodes apart to space them out
@@ -35,7 +36,7 @@ var simulation = d3.forceSimulation()
     .force("center", d3.forceCenter(width / 2, height / 2));
 
 // // // load the graph
-d3.json("src/mention_network.json", function(error, graph) {
+d3.json("./src/data.json", function(error, graph) {
     // set the nodes
     var nodes = graph.nodes;
     // links between nodes
@@ -60,7 +61,7 @@ d3.json("src/mention_network.json", function(error, graph) {
     node.append("circle")
         .attr("class", "node")
         .attr("r", 8)
-        .attr("fill", "steelblue")
+        .attr("fill", "#98d8f4")
 // //         .on("mouseover", mouseOver(.2))
 // //         .on("mouseout", mouseOut);
 
@@ -77,11 +78,11 @@ d3.json("src/mention_network.json", function(error, graph) {
         .text(function(d) {
             return d.course_name;
         })
-        .style("stroke", "black")
+        .style("stroke", "#f3f6f8")
         .style("stroke-width", 0.1)
-        // .style("fill", function(d) {
-        //     return 
-        // });
+        .style("fill", function(d) {
+            return "#f3f6f8";
+        });
 
     // add the nodes to the simulation and
     // tell it what to do on each tick
@@ -90,13 +91,12 @@ d3.json("src/mention_network.json", function(error, graph) {
         .on("tick", ticked);
 
     // add the links to the simulation
-    // simulation
-    //     .force("link")
-    //     .links(links);
+    simulation
+        .force("link")
+        .links(links);
 
     // on each tick, update node and link positions
     function ticked() {
-      debugger;
         link.attr("d", positionLink);
         node.attr("transform", positionNode);
     }
@@ -104,7 +104,6 @@ d3.json("src/mention_network.json", function(error, graph) {
     // links are drawn as curved paths between nodes,
     // through the intermediate nodes
     function positionLink(d) {
-      debugger;
         var offset = 30;
 
         var midpoint_x = (d.source.x + d.target.x) / 2;
