@@ -1,4 +1,4 @@
-# A d3 experiment with MOOC data
+# A D3 experiment using MOOC data
 
 # Steps to run
 - Clone the repo
