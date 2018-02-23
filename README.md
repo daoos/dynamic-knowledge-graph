@@ -8,5 +8,7 @@
 - run `npm run start` to start the server
 - navigate to http://localhost:8080/
 
+Big thanks to [@MBostock](https://github.com/mbostock) for his examples
+
 # Screenshot of result
 ![Alt text](./Knowledge-Graph.png)
