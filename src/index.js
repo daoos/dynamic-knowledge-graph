@@ -59,17 +59,18 @@ d3.csv("./src/programming_focus_subset.csv", function (error, links) {
         .attr("height", height);
 
     // build the arrow
-    svg.append("svg:defs").selectAll("marker")
+    var marker = svg.append("svg:defs").selectAll("marker")
         .data(["end"]) // Different link/path types can be defined here
         .enter().append("svg:marker") // This section adds in the arrows
         .attr("id", String)
         .attr("viewBox", "0 -5 10 10")
         .attr("refX", 15)
         .attr("refY", -1.5)
-        .attr("markerWidth", 10)
-        .attr("markerHeight", 10)
+        .attr("markerWidth", 6)
+        .attr("markerHeight", 6)
         .attr("orient", "auto")
         .style("fill", "#f3f6f8")
+        .style("opacity", .9)
         .append("svg:path")
         .attr("d", "M0,-5L10,0L0,5");
 
@@ -95,7 +96,7 @@ d3.csv("./src/programming_focus_subset.csv", function (error, links) {
         .attr("class", "node")
         .on("click", click)
         .on("dblclick", dblclick)
-        .on("mouseover", fade(.1))
+        .on("mouseover", fade(0))
         .on("mouseout", fade(1))
         // .on("mouseover", mouseOver)
         // .on("mouseout", mouseOut)
@@ -180,21 +181,12 @@ d3.csv("./src/programming_focus_subset.csv", function (error, links) {
         // mouseOut(d);
     }
 
-    function showToolTip(d) {
-        tooltip.transition()
-            .duration(200)
-            .style("opacity", .9);
-        tooltip.html("<p class='tooltip-title'>" + d.courseTitle + "</p>" + Math.round(d.probability * 100) + "% Match")
-            .style("left", (d3.event.pageX) + "px")
-            .style("top", (d3.event.pageY - 28) + "px");
-    }
-
 
     function showToolTip(d) {
         tooltip.transition()
             .duration(200)
             .style("opacity", .9);
-        tooltip.html("<p class='tooltip-title'>" + d.courseTitle + "</p>" + Math.round(d.probability * 100) + "% Match")
+        tooltip.html("<p class='tooltip-title'>" + d.courseTitle + "</p>" + "Course Probability: " + Math.round(d.probability * 100) + "%")
             .style("left", (d3.event.pageX) + "px")
             .style("top", (d3.event.pageY - 28) + "px");
     }
@@ -216,6 +208,14 @@ d3.csv("./src/programming_focus_subset.csv", function (error, links) {
             path.style("stroke-opacity", opacity).style("stroke-opacity", function (o) {
                 return o.source === d || o.target === d ? 1 : opacity;
             });
+
+            // marker.style("opacity", function (o) {
+            //     debugger;
+            //     return o.source === d || o.target === d ? 1 : opacity;
+            // });
+
+            d3.selectAll("marker")
+                .style("opacity", opacity);
             hideToolTip(d);
         };
     }
