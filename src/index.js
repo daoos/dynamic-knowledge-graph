@@ -16,7 +16,7 @@ d3.csv("./src/programming_focus_subset.csv", function (error, links) {
         link.target = nodes[link.target] ||
             (nodes[link.target] = {
                 name: link.target,
-                courseTitle: link.Target_course_title,
+                courseTitle: link.target_course_title,
                 probability: link.value
             });
         link.value = +link.value;
@@ -83,6 +83,11 @@ d3.csv("./src/programming_focus_subset.csv", function (error, links) {
         })
         .attr("marker-end", "url(#end)");
 
+    // build the tooltip
+    var tooltip = d3.select("body").append("div")
+        .attr("class", "tooltip")
+        .style("opacity", 0);
+
     // define the nodes
     var node = svg.selectAll(".node")
         .data(force.nodes())
@@ -90,6 +95,10 @@ d3.csv("./src/programming_focus_subset.csv", function (error, links) {
         .attr("class", "node")
         .on("click", click)
         .on("dblclick", dblclick)
+        .on("mouseover", fade(.1))
+        .on("mouseout", fade(1))
+        // .on("mouseover", mouseOver)
+        // .on("mouseout", mouseOut)
         .call(force.drag);
 
     // add the nodes
@@ -105,6 +114,16 @@ d3.csv("./src/programming_focus_subset.csv", function (error, links) {
         .text(function (d) {
             return d.courseTitle;
         });
+
+    // Helpers to figure out connected nodes
+    var linkedByIndex = {};
+    links.forEach(function (d) {
+        linkedByIndex[d.source.index + "," + d.target.index] = 1;
+    });
+
+    function isConnected(a, b) {
+        return linkedByIndex[a.index + "," + b.index] || linkedByIndex[b.index + "," + a.index] || a.index == b.index;
+    }
 
     // add the curvy lines
     function tick() {
@@ -127,32 +146,87 @@ d3.csv("./src/programming_focus_subset.csv", function (error, links) {
     }
 
     // action to take on mouse click
-    function click() {
-        d3.select(this).select("text").transition()
-            .duration(750)
-            .attr("x", 22)
-            .style("fill", "#f3f6f8")
-            .style("stroke", "lightsteelblue")
-            .style("stroke-width", ".5px")
-            .style("font", "20px sans-serif");
-        d3.select(this).select("circle").transition()
-            .duration(750)
-            .attr("r", 16)
-            .style("fill", "#33AADA");
+    function click(d) {
+        // d3.select(this).select("text").transition()
+        //     .duration(750)
+        //     .attr("x", 22)
+        //     .style("fill", "#f3f6f8")
+        //     // .style("stroke", "lightsteelblue")
+        //     .style("stroke-width", ".5px")
+        //     .style("font", "20px sans-serif");
+        d3.select(this).select("circle")
+            // .transition()
+            // .duration(750)
+            // .attr("r", 16)
+            .style("fill", "#544BC2");
+        showToolTip(d);
+        // mouseOut(d);
     }
 
     // action to take on mouse double click
-    function dblclick() {
+    function dblclick(d) {
         d3.select(this).select("circle").transition()
             .duration(750)
-            .attr("r", 6)
-            .style("fill", "#ccc");
-        d3.select(this).select("text").transition()
-            .duration(750)
-            .attr("x", 12)
-            .style("stroke", "none")
-            .style("fill", "#f3f6f8")
-            .style("stroke", "none")
-            .style("font", "10px sans-serif");
+            .attr("r", 8)
+            .style("fill", "#1d92c1");
+        // d3.select(this).select("text").transition()
+        //     .duration(750)
+        //     .attr("x", 12)
+        //     .style("stroke", "none")
+        //     .style("fill", "#f3f6f8")
+        //     .style("stroke", "none")
+        //     .style("font", "10px sans-serif");
+        showToolTip(d);
+        // mouseOut(d);
     }
+
+    function showToolTip(d) {
+        tooltip.transition()
+            .duration(200)
+            .style("opacity", .9);
+        tooltip.html("<p class='tooltip-title'>" + d.courseTitle + "</p>" + Math.round(d.probability * 100) + "% Match")
+            .style("left", (d3.event.pageX) + "px")
+            .style("top", (d3.event.pageY - 28) + "px");
+    }
+
+
+    function showToolTip(d) {
+        tooltip.transition()
+            .duration(200)
+            .style("opacity", .9);
+        tooltip.html("<p class='tooltip-title'>" + d.courseTitle + "</p>" + Math.round(d.probability * 100) + "% Match")
+            .style("left", (d3.event.pageX) + "px")
+            .style("top", (d3.event.pageY - 28) + "px");
+    }
+
+    function hideToolTip(d) {
+        tooltip.transition()
+            .duration(500)
+            .style("opacity", 0);
+    }
+
+    function fade(opacity) {
+        return function (d) {
+            node.style("stroke-opacity", function (o) {
+                var thisOpacity = isConnected(d, o) ? 1 : opacity;
+                this.setAttribute('fill-opacity', thisOpacity);
+                return thisOpacity;
+            });
+
+            path.style("stroke-opacity", opacity).style("stroke-opacity", function (o) {
+                return o.source === d || o.target === d ? 1 : opacity;
+            });
+            hideToolTip(d);
+        };
+    }
+
+    // TODO: Abstract all mouse behaviors into here
+    // function mouseOver(d, i) {
+    //     fade(.1, d);
+    // }
+
+    // function mouseOut(d, i) {
+    //     fade(1, d);
+    //     hideToolTip(d);
+    // }
 });
