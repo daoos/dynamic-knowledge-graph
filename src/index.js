@@ -98,8 +98,6 @@ d3.csv("./src/programming_focus_subset.csv", function (error, links) {
         .on("dblclick", dblclick)
         .on("mouseover", fade(0))
         .on("mouseout", fade(1))
-        // .on("mouseover", mouseOver)
-        // .on("mouseout", mouseOut)
         .call(force.drag);
 
     // add the nodes
@@ -148,20 +146,9 @@ d3.csv("./src/programming_focus_subset.csv", function (error, links) {
 
     // action to take on mouse click
     function click(d) {
-        // d3.select(this).select("text").transition()
-        //     .duration(750)
-        //     .attr("x", 22)
-        //     .style("fill", "#f3f6f8")
-        //     // .style("stroke", "lightsteelblue")
-        //     .style("stroke-width", ".5px")
-        //     .style("font", "20px sans-serif");
         d3.select(this).select("circle")
-            // .transition()
-            // .duration(750)
-            // .attr("r", 16)
             .style("fill", "#544BC2");
         showToolTip(d);
-        // mouseOut(d);
     }
 
     // action to take on mouse double click
@@ -170,15 +157,7 @@ d3.csv("./src/programming_focus_subset.csv", function (error, links) {
             .duration(750)
             .attr("r", 8)
             .style("fill", "#1d92c1");
-        // d3.select(this).select("text").transition()
-        //     .duration(750)
-        //     .attr("x", 12)
-        //     .style("stroke", "none")
-        //     .style("fill", "#f3f6f8")
-        //     .style("stroke", "none")
-        //     .style("font", "10px sans-serif");
         showToolTip(d);
-        // mouseOut(d);
     }
 
 
@@ -208,11 +187,6 @@ d3.csv("./src/programming_focus_subset.csv", function (error, links) {
             path.style("stroke-opacity", opacity).style("stroke-opacity", function (o) {
                 return o.source === d || o.target === d ? 1 : opacity;
             });
-
-            // marker.style("opacity", function (o) {
-            //     debugger;
-            //     return o.source === d || o.target === d ? 1 : opacity;
-            // });
 
             d3.selectAll("marker")
                 .style("opacity", opacity);

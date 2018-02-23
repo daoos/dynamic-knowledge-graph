@@ -1,3 +1,5 @@
+// Use this file if we don't want to have the "moving/force" effects on the graph...
+
 import * as d3 from 'd3';
 // dimensions
 var width = 1000;
