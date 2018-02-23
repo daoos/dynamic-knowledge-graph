@@ -1,35 +1,54 @@
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>D3 Workspace</title>
+  <title>Q1-LLS-Data-hackathon</title>
   <script src="http://d3js.org/d3.v3.js"></script>
 </head>
+
 <body>
   <div class="chart"></div>
 </body>
 <style>
-  text {
-    font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
-}
+  body {
+    background-color: #283E4A;
+  }
 
-body {
-  background-color: #283E4A;
-}
-
-svg {
-    width: 100%;
-}
-
-.link {
+  path.link {
     fill: none;
-    stroke: #ddd;
-}
+    stroke: #666;
+    stroke-width: 1.5px;
+  }
 
-.node {
-    fill: rgb(216, 37, 37)17, 11, 11);
-    stroke-width: 1px;
-}
+  path.link.twofive {
+    opacity: 0.25;
+  }
+
+  path.link.fivezero {
+    opacity: 0.50;
+  }
+
+  path.link.sevenfive {
+    opacity: 0.75;
+  }
+
+  path.link.onezerozero {
+    opacity: 1.0;
+  }
+
+  circle {
+    fill: #ccc;
+    stroke: #fff;
+    stroke-width: 1.5px;
+  }
+
+  text {
+    fill: #000;
+    font: 10px sans-serif;
+    pointer-events: none;
+  }
 </style>
+
 </html>
