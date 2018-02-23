@@ -7,3 +7,6 @@
 - ryb `npm run build` to generate the bundle
 - run `npm run start` to start the server
 - navigate to http://localhost:8080/
+
+# Screenshot of result
+![Alt text](./Knowledge-Graph.png)
